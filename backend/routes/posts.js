@@ -60,18 +60,33 @@ router.put(
             content: req.body.content,
             imagePath: imagePath
         });
-        console.log(post);
+
         Post.updateOne({ _id: req.params.id }, post).then(result => {
             res.status(200).json({ message: 'Update successfully!' })
         });
     });
 
 router.get('', (req, res, next) => {
-    Post.find()
+    const pageSize = req.query.pagesize;
+    const currentPage = req.query.page;
+    const postQuery = Post.find();
+    let fetchedPosts;
+
+    if (pageSize && currentPage) {
+        postQuery
+            .skip(pageSize * currentPage)
+            .limit(pageSize);
+    }
+    postQuery
         .then(documents => {
+            this.fetchedPosts = documents;
+            return Post.countDocuments();
+        })
+        .then(count => {
             res.status(200).json({
                 message: 'Posts fetched succesfully!',
-                posts: documents
+                posts: this.fetchedPosts,
+                maxPosts: count
             });
         });
 });
