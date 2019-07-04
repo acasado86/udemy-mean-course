@@ -18,6 +18,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   //   { title: 'Third Post', content: `This is the third post's content` },
   // ];
   posts: Post[] = [];
+  isLoading = false;
   private postsSub: Subscription;
   totalPosts = 100;
   postsPerPage = 5;
@@ -49,8 +50,11 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(postId: string) {
+    this.isLoading = true;
     this.postsService.deletePost(postId).subscribe(() => {
       this.postsService.getPosts(this.postsPerPage, this.currentPage);
+    }, () => {
+      this.isLoading = false;
     });
   }
 
@@ -60,6 +64,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   onChangedPage(pageData: PageEvent) {
+    this.isLoading = true;
     this.currentPage = pageData.pageIndex;
     this.postsPerPage = pageData.pageSize;
     this.postsService.getPosts(this.postsPerPage, this.currentPage);
