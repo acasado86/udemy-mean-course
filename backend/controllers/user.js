@@ -45,7 +45,7 @@ exports.userLogin = (req, res, next) => {
             }
             const token = jwt.sign(
                 { email: fetchUser.email, userId: fetchUser._id },
-                'CACATUA_SECRET_SHOULT_BE_LONGER',
+                process.env.JWT_KEY,
                 { expiresIn: '1h' }
             );
             res.status(200).json({

@@ -9,7 +9,12 @@ const userRoutes = require('./routes/user');
 
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/udemy-mean", {useNewUrlParser: true})
+let MONGO_AUTH = '';
+if (process.env.MONGO_USER && process.env.MONGO_PASSWORD) {
+    MONGO_AUTH = process.env.MONGO_USER + ':' + process.env.MONGO_PASSWORD;
+}
+
+mongoose.connect("mongodb://" + MONGO_AUTH + "@localhost:27017/udemy-mean", {useNewUrlParser: true})
     .then(() => {
         console.log("Connected to database!");
     })

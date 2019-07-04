@@ -1,0 +1,7 @@
+{
+    "env": {
+        "MONGO_USER": "",
+        "MONGO_PASSWORD": "",
+        "JWT_KEY": "CACATUA_SECRET_SHOULT_BE_LONGER"
+    }
+}
